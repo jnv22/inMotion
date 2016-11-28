@@ -1,0 +1,53 @@
+$backgroundColor: #EEEEEE;
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: 'Roboto', sans-serif;
+}
+
+#main {
+  height: 100%;
+  .content {
+    background-color: $backgroundColor;
+    position: fixed;
+     top: 0;
+     bottom: 0;
+     right: 0;
+     left: 0;
+     vertical-align: top;
+    .leaflet-container {
+      height: 100%;
+      width: 100%;
+      margin: 0 auto;
+    }
+  }
+}
+
+.modal {
+  ul.profileInformation{
+    margin: auto;
+    width: 55%;
+    margin-top: 30px;
+    list-style: none;
+    padding:0;
+    text-align: center;
+    li {
+      line-height: 30px;
+    }
+  }
+  .profilePicture {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .title {
+    text-align: center;
+  }
+
+  .formComponents {
+    display: block;
+    text-align: center;
+  }
+}
