@@ -9,12 +9,37 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import ActionEdit from 'material-ui/svg-icons/editor/mode-edit';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
+import DropDownMenu from 'material-ui/DropDownMenu';
+import MenuItem from 'material-ui/MenuItem';
+
 
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
-
+const styles = {
+  block: {
+    maxWidth: 250,
+  },
+  radioButton: {
+    marginBottom: 16,
+  },
+  customWidth: {
+    width: 200,
+  },
+};
 
 const Components = {
+
+  DropDown: React.createClass({
+    render: function() {
+      return <div>
+        <DropDownMenu value={this.props.searchMovieComponent} onChange={this.props.changeSearchSelection}>
+        {this.props.movieComponents.map((component, i) => {
+          return <MenuItem value={component} primaryText={component} />
+        })}
+        </DropDownMenu>
+      </div>
+    }
+  }),
 
 Table: React.createClass({
   render: function() {
@@ -119,6 +144,7 @@ Drawer: React.createClass({
         <TextField
           type={this.props.type}
           id={this.props.id}
+          key={this.props.key}
           value={this.props.value}
           onChange={this.props.handleChange}
           floatingLabelText={this.props.label}>

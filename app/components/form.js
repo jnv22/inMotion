@@ -6,14 +6,13 @@ import FlatButton from 'material-ui/FlatButton';
 module.exports = React.createClass({
   render: function() {
     console.log(this.props.movieComponents)
-    var updateMovieComponent = this.props.movieComponents || ''
-    var movieComponents = ["genre", "actors", "title", "year", "rating"];
+    var updatedMovieComponent = this.props.updatedMovieComponent || ''
     return (
       <div>
         <h1 className="title">Add Movie</h1>
         <form  ref="addForm" onSubmit={this.props.saveMovie}>
-         {movieComponents.map((component, i) => {
-          return <span className="formComponents"><components.InputField {...this.props} key={i} value={updateMovieComponent[component] || ''} id={component} label={component.toUpperCase()} type="text"/></span>
+         {this.props.movieComponents.map((component, i) => {
+          return <span className="formComponents"><components.InputField {...this.props} key={i} value={updatedMovieComponent[component] || ''} id={component} label={component.toUpperCase()} type="text"/></span>
         })}
         </form>
       </div>

@@ -1,6 +1,8 @@
 import React from "react";
 import components from "../components/mdlComponents";
 import Dialog from "../components/dialog";
+import Search from "../components/search";
+
 import update from 'react-addons-update';
 
 var movies = JSON.parse(localStorage.getItem('movies')) || [];
@@ -14,7 +16,7 @@ module.exports = React.createClass({
       drawerOpen: false,
       movieComponents: {},
       movies:[],
-      editedMovie: null
+      editedMovie: null,
     }
   },
 
@@ -39,19 +41,20 @@ module.exports = React.createClass({
     })
   },
 
+
   saveMovie: function(e) {
     e.preventDefault()
+
+    //treat this.state as immutable as per react docs
     let movies = this.state.movies.slice()
     let index = this.state.editedMovie
     if (index !== null) {
-      console.log("HERE")
       movies[index] = this.state.movieComponents;
     }
-
     else {
-      //treat this.state as immutable as per react docs
       movies.push(this.state.movieComponents)
     }
+
     this.setState({
       movies: movies,
       editedMovie: null
@@ -83,21 +86,27 @@ module.exports = React.createClass({
   },
 
   render: function() {
+    var movieComponents = ["genre", "actors", "title", "year", "rating"];
     return (
       <div className="content">
       <components.Header toggleModal={this.toggleModal}/>
+      <Search
+        movieComponents={movieComponents}
+        movies={this.state.movies}
+      />
       <components.Table
        movies={this.state.movies}
        editMovie={this.editMovie}
        removeMovie={this.removeMovie}/>
-        <Dialog
-          cancelModal={this.cancelModal}
-          currentView={this.state.currentModalView}
-          open={this.state.modalOpen}
-          movieComponents={this.state.movieComponents}
-          handleChange={this.handleChange}
-          saveMovie={this.saveMovie}
-        />
+      <Dialog
+        cancelModal={this.cancelModal}
+        currentView={this.state.currentModalView}
+        open={this.state.modalOpen}
+        updatedMovieComponent={this.state.movieComponents}
+        movieComponents={movieComponents}
+        handleChange={this.handleChange}
+        saveMovie={this.saveMovie}
+      />
       </div>
     )
   }
