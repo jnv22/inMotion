@@ -12,7 +12,7 @@ function DialogTemplate() {
 var Dialog = React.createClass({
   render: function() {
     var currentView = DialogTemplate.call(this)
-    return <components.Dialog {...this.props} actions={actions}> {currentView} </components.Dialog>
+    return <components.Dialog {...this.props}> {currentView} </components.Dialog>
   }
 })
 

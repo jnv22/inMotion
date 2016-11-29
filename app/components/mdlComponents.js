@@ -7,10 +7,56 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import ActionEdit from 'material-ui/svg-icons/editor/mode-edit';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 
 
 const Components = {
+
+Table: React.createClass({
+  render: function() {
+    let iconStyle = {
+      "margin-top": "7px",
+      margin: "20px",
+      cursor: "pointer",
+      padding: "5px",
+      "background-color": "#EEEEEE"
+    }
+    return <Table
+      selectable={false}
+    >
+    <TableHeader
+      adjustForCheckbox={false}
+      displaySelectAll={false}
+    >
+      <TableRow>
+        <TableHeaderColumn>Title</TableHeaderColumn>
+        <TableHeaderColumn>Year</TableHeaderColumn>
+        <TableHeaderColumn>Rating</TableHeaderColumn>
+        <TableHeaderColumn></TableHeaderColumn>
+      </TableRow>
+    </TableHeader>
+    <TableBody
+      displayRowCheckbox={false}
+    >
+    {this.props.movies.map((movie, i) => {
+      return (
+        <TableRow key={i}>
+          <TableRowColumn>{movie.title}</TableRowColumn>
+          <TableRowColumn>{movie.year}</TableRowColumn>
+          <TableRowColumn>{movie.rating}</TableRowColumn>
+          <ActionEdit style={iconStyle} onTouchTap={this.props.editMovie.bind(null, movie, i)}/>
+          <ActionDelete style={iconStyle} onTouchTap={this.props.removeMovie.bind(null, movie, i)}/>
+        </TableRow>
+      )
+    })}
+    </TableBody>
+  </Table>
+  }
+}),
 
 Header: React.createClass({
   render: function() {
@@ -19,7 +65,9 @@ Header: React.createClass({
       iconElementLeft={
         <IconButton
         onTouchTap={this.props.toggleModal}
-        ><AddNewMovie /></IconButton>
+        >
+          <AddNewMovie />
+        </IconButton>
       }
     />
   }
@@ -30,7 +78,7 @@ Dialog: React.createClass({
     const actions = [<FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.props.toggle} />,
+        onTouchTap={this.props.cancelModal} />,
     <FlatButton
         label="Save"
         primary={true}
@@ -71,6 +119,7 @@ Drawer: React.createClass({
         <TextField
           type={this.props.type}
           id={this.props.id}
+          value={this.props.value}
           onChange={this.props.handleChange}
           floatingLabelText={this.props.label}>
         </TextField>
