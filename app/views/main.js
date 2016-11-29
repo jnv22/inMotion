@@ -1,8 +1,7 @@
 import React from "react";
 import components from "../components/mdlComponents";
 import Dialog from "../components/dialog";
-import Search from "../components/search";
-
+import FilterableTable from "../components/filterableTable"
 import update from 'react-addons-update';
 
 var movies = JSON.parse(localStorage.getItem('movies')) || [];
@@ -77,8 +76,7 @@ module.exports = React.createClass({
   },
   removeMovie: function(movie, i) {
     let movies = this.state.movies.slice()
-    let index = this.state.editedMovie
-    movies.splice(index, 1);
+    movies.splice(i, 1);
     this.setState({
       movies: movies
     })
@@ -90,14 +88,12 @@ module.exports = React.createClass({
     return (
       <div className="content">
       <components.Header toggleModal={this.toggleModal}/>
-      <Search
-        movieComponents={movieComponents}
+      <FilterableTable
         movies={this.state.movies}
+        movieComponents={movieComponents}
+        editMovie={this.editMovie}
+        removeMovie={this.removeMovie}
       />
-      <components.Table
-       movies={this.state.movies}
-       editMovie={this.editMovie}
-       removeMovie={this.removeMovie}/>
       <Dialog
         cancelModal={this.cancelModal}
         currentView={this.state.currentModalView}

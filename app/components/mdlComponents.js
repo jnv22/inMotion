@@ -43,6 +43,8 @@ const Components = {
 
 Table: React.createClass({
   render: function() {
+    console.log(this.props.movies)
+
     let iconStyle = {
       "margin-top": "7px",
       margin: "20px",
@@ -130,10 +132,10 @@ Dialog: React.createClass({
 Drawer: React.createClass({
   render: function() {
     return (
-        <Drawer open={this.props.open} className="drawer">
-          <AppBar iconElementLeft={<IconButton></IconButton>}/>
-          {this.props.currentView}
-        </Drawer>
+      <Drawer open={this.props.open} className="drawer">
+        <AppBar iconElementLeft={<IconButton></IconButton>}/>
+        {this.props.currentView}
+      </Drawer>
     );
   }
 }),
