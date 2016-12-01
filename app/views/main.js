@@ -1,108 +1,97 @@
 import React from "react";
 import components from "../components/mdlComponents";
-import Dialog from "../components/dialog";
+import Form from "../components/form";
 import FilterableTable from "../components/filterableTable"
 import update from 'react-addons-update';
 
 var movies = JSON.parse(localStorage.getItem('movies')) || [];
 
-
 module.exports = React.createClass({
-
   getInitialState: function() {
     return {
       modalOpen: false,
-      drawerOpen: false,
       movieComponents: {},
       movies:[],
-      editedMovie: null,
+      editedMovieIndex: null,
+    }
+  },
+
+  getDefaultProps: function() {
+    return {
+       movieComponents: ["genre", "actors", "title", "year", "rating"]
     }
   },
 
   componentDidMount: function() {
-    this.setState({
-      movies: movies
-    })
+    this.setState({movies: movies})
   },
 
   toggleModal: function(modal) {
-    this.setState({
-      modalOpen: !this.state.modalOpen
-    })
+    this.setState({modalOpen: !this.state.modalOpen})
   },
 
-  handleChange: function(e) {
+  handleInputChange: function(e) {
     let movieComponents = update(this.state.movieComponents, {
        [e.target.id]: {$set: e.target.value}
     });
-    this.setState({
-      movieComponents: movieComponents
-    })
+
+    this.setState({movieComponents: movieComponents})
   },
 
-
   saveMovie: function(e) {
-    e.preventDefault()
+    e.preventDefault();
 
     //treat this.state as immutable as per react docs
-    let movies = this.state.movies.slice()
-    let index = this.state.editedMovie
-    if (index !== null) {
-      movies[index] = this.state.movieComponents;
-    }
-    else {
-      movies.push(this.state.movieComponents)
-    }
+    let movies = this.state.movies.slice();
+    let index = this.state.editedMovieIndex;
 
-    this.setState({
-      movies: movies,
-      editedMovie: null
-    })
-    localStorage.setItem('movies', JSON.stringify(movies));
+    //if updating list, update. else push new movies to array
+    (index !== null) ? (movies[index] = this.state.movieComponents) : movies.push(this.state.movieComponents)
+
+    this.setState({editedMovieIndex: null});
+    this.updateMovie(movies);
     this.cancelModal();
   },
 
-  editMovie: function(movie, i) {
-    this.setState({movieComponents: movie, editedMovie: i});
+  removeMovie: function(movie, i) {
+    let movies = this.state.movies.slice();
+    movies.splice(i, 1);
+    this.updateMovie(movies)
+  },
+
+  updateMovie: function(movies) {
+    this.setState({movies: movies})
     localStorage.setItem('movies', JSON.stringify(movies));
+  },
+
+  editMovie: function(movie, i) {
+    this.setState({movieComponents: movie, editedMovieIndex: i});
     this.toggleModal();
   },
 
   cancelModal: function() {
-    this.setState({
-      movieComponents: {},
-      modalOpen: !this.state.modalOpen
-    })
-  },
-  removeMovie: function(movie, i) {
-    let movies = this.state.movies.slice()
-    movies.splice(i, 1);
-    this.setState({
-      movies: movies
-    })
-    localStorage.setItem('movies', JSON.stringify(movies));
+    this.setState({movieComponents: {}})
+    this.toggleModal()
   },
 
   render: function() {
-    var movieComponents = ["genre", "actors", "title", "year", "rating"];
     return (
       <div className="content">
-      <components.Header toggleModal={this.toggleModal}/>
-      <FilterableTable
-        movies={this.state.movies}
-        movieComponents={movieComponents}
-        editMovie={this.editMovie}
-        removeMovie={this.removeMovie}
-      />
-      <Dialog
-        cancelModal={this.cancelModal}
-        currentView={this.state.currentModalView}
-        open={this.state.modalOpen}
-        updatedMovieComponent={this.state.movieComponents}
-        movieComponents={movieComponents}
-        handleChange={this.handleChange}
-        saveMovie={this.saveMovie}
-      />
+        <components.Header toggleModal={this.toggleModal}/>
+        <FilterableTable
+          movies={this.state.movies}
+          movieComponents={this.props.movieComponents}
+          editMovie={this.editMovie}
+          removeMovie={this.removeMovie}
+        />
+        <Form
+          cancelModal={this.cancelModal}
+          open={this.state.modalOpen}
+          updatedMovieComponent={this.state.movieComponents}
+          movieComponents={this.props.movieComponents}
+          handleChange={this.handleInputChange}
+          saveMovie={this.saveMovie}
+        />
       </div>
     )
   }

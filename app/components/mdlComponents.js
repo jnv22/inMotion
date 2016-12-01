@@ -1,7 +1,6 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
 import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
 import AddNewMovie from 'material-ui/svg-icons/content/add';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
@@ -11,8 +10,6 @@ import ActionEdit from 'material-ui/svg-icons/editor/mode-edit';
 import ActionDelete from 'material-ui/svg-icons/action/delete';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
-
-
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 const styles = {
@@ -28,11 +25,10 @@ const styles = {
 };
 
 const Components = {
-
   DropDown: React.createClass({
     render: function() {
       return <div>
-        <DropDownMenu value={this.props.searchMovieComponent} onChange={this.props.changeSearchSelection}>
+        <DropDownMenu value={this.props.selectedMovieComponent} onChange={this.props.changeSearchSelection}>
         {this.props.movieComponents.map((component, i) => {
           return <MenuItem value={component} primaryText={component} />
         })}
@@ -43,8 +39,6 @@ const Components = {
 
 Table: React.createClass({
   render: function() {
-    console.log(this.props.movies)
-
     let iconStyle = {
       "margin-top": "7px",
       margin: "20px",
@@ -91,7 +85,7 @@ Header: React.createClass({
       title="InMotion"
       iconElementLeft={
         <IconButton
-        onTouchTap={this.props.toggleModal}
+          onTouchTap={this.props.toggleModal}
         >
           <AddNewMovie />
         </IconButton>
@@ -102,16 +96,20 @@ Header: React.createClass({
 
 Dialog: React.createClass({
   render: function() {
-    const actions = [<FlatButton
+    const actions = [
+      <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.props.cancelModal} />,
-    <FlatButton
-        label="Save"
-        primary={true}
-        type="submit"
-        keyboardFocused={true}
-        onTouchTap={this.props.saveMovie} />]
+        onTouchTap={this.props.cancelModal}
+      />,
+      <FlatButton
+          label="Save"
+          primary={true}
+          type="submit"
+          keyboardFocused={true}
+          onTouchTap={this.props.saveMovie}
+      />
+    ]
     return (
       <div>
       <Dialog
@@ -129,17 +127,6 @@ Dialog: React.createClass({
   }
 }),
 
-Drawer: React.createClass({
-  render: function() {
-    return (
-      <Drawer open={this.props.open} className="drawer">
-        <AppBar iconElementLeft={<IconButton></IconButton>}/>
-        {this.props.currentView}
-      </Drawer>
-    );
-  }
-}),
-
   InputField: React.createClass({
     render: function() {
       return (
@@ -149,7 +136,8 @@ Drawer: React.createClass({
           key={this.props.key}
           value={this.props.value}
           onChange={this.props.handleChange}
-          floatingLabelText={this.props.label}>
+          floatingLabelText={this.props.label}
+        >
         </TextField>
       )
     }

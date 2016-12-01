@@ -8,7 +8,6 @@ import Main from './views/main'
 
 injectTapEventPlugin();
 require('./styles/app.scss')
-require('./styles/media-query.scss')
 
 import { Router, Route, browserHistory} from 'react-router';
 
