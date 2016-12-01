@@ -34,7 +34,6 @@
     "react": "15.1.0",
     "react-addons-update": "^15.4.0",
     "react-dom": "15.1.0",
-    "react-localstorage": "^0.3.0",
     "react-router": "2.4.1",
     "react-tap-event-plugin": "1.0.0"
   }
